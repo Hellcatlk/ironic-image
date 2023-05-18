@@ -20,4 +20,11 @@ if [[ "$IRONIC_TLS_SETUP" == "true" ]] && [[ "${RESTART_CONTAINER_CERTIFICATE_UP
     done &
 fi
 
+if [[ -e "$BMC_CACERT_PATH" ]]; then
+    # shellcheck disable=SC2034
+    inotifywait -m -e create,modify,delete "${BMC_CACERT_PATH}" | while read -r file event; do
+        cat "$BMC_CACERT_PATH"/* > /tmp/bmc-tls.pem
+    done &
+fi
+
 exec /usr/bin/ironic

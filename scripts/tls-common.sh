@@ -18,6 +18,7 @@ export IRONIC_VMEDIA_KEY_FILE=/certs/vmedia/tls.key
 export RESTART_CONTAINER_CERTIFICATE_UPDATED=${RESTART_CONTAINER_CERTIFICATE_UPDATED:-"false"}
 
 export MARIADB_CACERT_FILE=/certs/ca/mariadb/tls.crt
+export BMC_CACERT_PATH=/certs/ca/bmc
 
 mkdir -p /certs/ironic
 mkdir -p /certs/ironic-inspector
@@ -98,4 +99,11 @@ if [[ -f "$MARIADB_CACERT_FILE" ]]; then
     export MARIADB_TLS_ENABLED="true"
 else
     export MARIADB_TLS_ENABLED="false"
+fi
+
+if  [ -e "$BMC_CACERT_PATH" ]; then
+    export BMC_TLS_ENABLED="true"
+    cat "$BMC_CACERT_PATH"/* > /tmp/bmc-tls.pem
+else
+    export BMC_TLS_ENABLED="false"
 fi

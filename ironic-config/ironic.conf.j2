@@ -91,6 +91,9 @@ verify_step_priority_override = management.clear_job_queue:90
 node_history = False
 # Provide for a timeout longer than 60 seconds for certain vendor's hardware
 power_state_change_timeout = 120
+{% if env.BMC_TLS_ENABLED == "true" %}
+default_verify_ca_path = /tmp/bmc-tls.pem
+{% endif %}
 
 [database]
 {% if env.IRONIC_USE_MARIADB | lower == "false" %}
